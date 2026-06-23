@@ -1,0 +1,14 @@
+{
+  "name": "companylist",
+  "version": "1.0.0",
+  "description": "MERN Business Directory Application",
+  "scripts": {
+    "install-all":   "cd server && npm install && cd ../client && npm install && cd ../admin && npm install",
+    "server":        "cd server && npm run dev",
+    "client":        "cd client && npm run dev",
+    "admin":         "cd admin && npm run dev",
+    "seed":          "cd server && npm run seed",
+    "install-admin": "cd admin && npm install"
+  },
+  "private": true
+}
