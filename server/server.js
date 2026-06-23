@@ -6,7 +6,22 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+// server/server.js (Recommended change)
+const allowedOrigins = [
+  'https://companylist-bvon.vercel.app',
+  'https://companylist-chi.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('CORS policy block'), false);
+    }
+    return callback(null, true);
+  }
+}));
 app.use(express.json());
 
 // Routes
