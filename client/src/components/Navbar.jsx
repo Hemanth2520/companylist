@@ -69,9 +69,9 @@ export default function Navbar({ onSearch, theme, toggleTheme }) {
           </button>
           <Link to="/" className="mobile-menu__link" onClick={() => setMobileOpen(false)}>Businesses</Link>
           <Link to="/" className="mobile-menu__link" onClick={() => setMobileOpen(false)}>Investments</Link>
-          <span className="mobile-menu__link">Franchises</span>
-          <span className="mobile-menu__link">Investors</span>
-          <span className="mobile-menu__link">Advisors</span>
+          <Link to="/franchises" className="mobile-menu__link" onClick={() => setMobileOpen(false)}>Franchises</Link>
+          <Link to="/investors" className="mobile-menu__link" onClick={() => setMobileOpen(false)}>Investors</Link>
+          <Link to="/advisors" className="mobile-menu__link" onClick={() => setMobileOpen(false)}>Advisors</Link>
           <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
             <button className="btn-ghost" style={{ flex: 1 }}>Login</button>
             <button className="btn-primary" style={{ flex: 1 }}>Register</button>

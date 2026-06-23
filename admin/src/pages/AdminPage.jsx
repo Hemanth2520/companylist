@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { FiEdit, FiTrash2, FiPlus, FiSearch } from 'react-icons/fi';
+import { FiEdit, FiTrash2, FiPlus, FiSearch, FiAlertTriangle, FiRefreshCw } from 'react-icons/fi';
 import { getCompanies, createCompany, updateCompany, deleteCompany } from '../api/companies';
 import AdminCompanyForm from '../components/AdminCompanyForm';
 
 export default function AdminPage() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [editingCompany, setEditingCompany] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,11 +17,15 @@ export default function AdminPage() {
 
   const fetchCompanies = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await getCompanies({ limit: 1000 });
-      setCompanies(res.data.companies);
+      setCompanies(res.data.companies || []);
     } catch (err) {
       console.error('Error fetching companies:', err);
+      const msg = err.response?.data?.message || err.message || 'Failed to connect to backend';
+      setError(msg);
+      setCompanies([]);
     } finally {
       setLoading(false);
     }
@@ -58,6 +63,7 @@ export default function AdminPage() {
     (c.location || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  /* ---- FORM VIEW ---- */
   if (showForm) {
     return (
       <div className="admin-container">
@@ -73,8 +79,28 @@ export default function AdminPage() {
     );
   }
 
+  /* ---- LIST VIEW ---- */
   return (
     <div className="admin-container">
+      {/* Error Banner */}
+      {error && (
+        <div className="admin-error-banner">
+          <div className="admin-error-banner__content">
+            <FiAlertTriangle size={18} />
+            <div>
+              <strong>Connection Error</strong>
+              <p>{error}</p>
+              <p style={{ fontSize: '0.75rem', marginTop: 4 }}>
+                Make sure the backend server is running: <code>npm run server</code>
+              </p>
+            </div>
+          </div>
+          <button className="btn-ghost" onClick={fetchCompanies} style={{ flexShrink: 0 }}>
+            <FiRefreshCw size={14} /> Retry
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <header className="admin-header">
         <div>
@@ -179,7 +205,9 @@ export default function AdminPage() {
             </tbody>
           </table>
           {filteredCompanies.length === 0 && (
-            <div className="admin-empty">No companies found.</div>
+            <div className="admin-empty">
+              {error ? 'Unable to load companies. Start the backend server and click Retry.' : 'No companies found.'}
+            </div>
           )}
         </div>
       )}

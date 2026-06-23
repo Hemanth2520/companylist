@@ -1432,6 +1432,7 @@ img {
   display: flex;
   gap: 12px;
   margin-top: 8px;
+  min-width: 0;
 }
 
 .sidebar__range-field {
@@ -1439,6 +1440,7 @@ img {
   flex-direction: column;
   gap: 4px;
   flex: 1;
+  min-width: 0;
 }
 
 .sidebar__range-field label {
@@ -1449,6 +1451,8 @@ img {
 }
 
 .sidebar__range-field input {
+  width: 100%;
+  box-sizing: border-box;
   padding: 6px 10px;
   background: var(--clr-bg-2);
   border: 1px solid var(--clr-border);
